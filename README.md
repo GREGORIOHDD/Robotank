@@ -1,4 +1,4 @@
 # Robotank
-Autonomous tank project for CS480 - Robots & 3D Printing
+Autonomous tank project for CS480 - Robotics & 3D Printing
 
 
