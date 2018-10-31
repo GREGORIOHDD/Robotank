@@ -121,7 +121,6 @@ There is currently no speed control for the motors, they are either fully on or 
 
 <iframe width="750" height="422" src="https://www.youtube.com/embed/EfkwKTTyvyM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-
 As can be seen above, the finished vehicle was able to successfully navigate around objects placed in its path. And despite my concerns the 9V battery that I used was able to power both motors and the ultrasonic sensor without fail. 
 
 The treads provided adequate traction for the vehicle to move any surface that I tested it on, although the battery was not strong enough to power the motors up inclines or on some thicker carpets.
