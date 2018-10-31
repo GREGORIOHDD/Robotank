@@ -13,23 +13,23 @@
 
 My primary goal for this project was to create a small vehicle using electrical components and 3D printed parts. I wanted to avoid buying wheels or using prebuilt kits for the project which led me to the tank-style design as I could easily 3D print the necessary components for the treads.
 
-An additional goal for the project was to give the vehicle basic autonomy through obstacle avoidance. Rather than creating a complex system for mapping the enviornment and keeping track of the vehicles location I opted for a simpler object avoidance approach. The vehicle will drive forward until it encounters and object in its path, and then it will turn until the path is clear and continue forward. This is comparable to the style of autonomy that modern vacuums like the Roomba use.
+An additional goal for the project was to give the vehicle basic autonomy through obstacle avoidance. Rather than creating a complex system for mapping the environment and keeping track of the vehicles location I opted for a simpler object avoidance approach. The vehicle will drive forward until it encounters and object in its path, and then it will turn until the path is clear and continue forward. This is comparable to the style of autonomy that modern vacuums like the Roomba use.
 
 ## Inspirations
 
-Before beginning this project I decided to take a look at the work other people have done on similar problems. I was mainly focused on finding the best way to design the wheels for the vehicle in order to maximize traction and speed.
+Before beginning this project, I decided to take a look at the work other people have done on similar problems. I was mainly focused on finding the best way to design the wheels for the vehicle in order to maximize traction and speed.
 
-During my search I discovered a design on [Thingiverse](https://www.thingiverse.com/thing:467807) that was using tank treads rather than wheels. I decided that the increased surface area of the tank treads would help maximize traction, and chose to use a similar design for this project. I made some slight modifications to the original design in order to fit the gears onto the body that I designed for the vehicle.
+During my search I discovered a design on [Thingiverse](https://www.thingiverse.com/thing:467807) that was using tank treads rather than wheels. I decided that the increased surface area of the tank treads would help maximize traction and chose to use a similar design for this project. I made some slight modifications to the original design in order to fit the gears onto the body that I designed for the vehicle.
 
 I also found a simple RC car project on [Howtomechatronics](https://howtomechatronics.com/tutorials/arduino/arduino-dc-motor-control-tutorial-l298n-pwm-h-bridge/) which I occasionally used as a reference for circuitry and electric parts throughout this project.
 
 ## The Project
 
-I began this project by designing the body of the vehicle on OpenSCAD. Contrary to many of the other designs that I looked at, I chose to place the motors in seperate corners of the vehicle in order to keep it from being unnecessarily wide and to disperse the weight of the motors more evenly across the vehicle.
+I began this project by designing the body of the vehicle on OpenSCAD. Contrary to many of the other designs that I looked at, I chose to place the motors in separate corners of the vehicle to keep it from being unnecessarily wide and to disperse the weight of the motors more evenly across the vehicle.
 
 ![Vehicle Body](images/vehicle_body.jpg)
 
-The OpenSCAD code for the vehicle body can be seen below.
+The OpenSCAD code for the vehicle body can be seen below. I tried to keep as much the OpenSCAD design as parametric as possible so it should be relatively easy to replace components with ones of different dimensions or change the overall vehicle dimensions.
 
 ```OpenSCAD
 $fn=256;
@@ -195,7 +195,9 @@ mirror([1,0,0])
 construct();
 ```
 
-The top of the vehicle is printed seperately from the body and can be snapped into place after all the internal wiring has been completed. The motor controller is then mounted to the top.
+#  
+
+The top of the vehicle is printed separately from the body and can be snapped into place after all the internal wiring has been completed. The motor controller is then mounted to the top.
 
 ![Vehicle Top](images/vehicle_top.jpg)
 
@@ -305,11 +307,11 @@ mirror([1,0,0])
 top();
 ```
 
-The treads and are a slightly modified version of the ones given in the [Thingiverse](https://www.thingiverse.com/thing:467807) project mentioned above. I decided that I did not like how the front gears were smaller than the back ones so I modified them to be the same height. The modified FreeCAD files are available in the project's [github repository](https://github.com/jjacobson/Robotank/tree/master/tracks). The full circle gear snaps on to the axle attached to the vehicle body, and the halfcircle gear is attached to each motor's shaft. 
+The treads and are a slightly modified version of the ones given in the [Thingiverse](https://www.thingiverse.com/thing:467807) project mentioned above. I decided that I did not like how the front gears were smaller than the back ones so I modified them to be the same height. The modified FreeCAD files are available in the project's [github repository](https://github.com/jjacobson/Robotank/tree/master/tracks). The full-circle gear snaps on to the axle attached to the vehicle body, and the half-circle gear is attached to each motor's shaft. 
 
 ![Treads](images/vehicle_treads.jpg)
 
-The individual treads are held together with small pieces of 1.75mm fillament which are placed in the holes at either end of each piece of tread. The pieces of tread had to be individually filed down in order to make them fit together and rotate smoothly.
+The individual treads are held together with small pieces of 1.75mm filament which are placed in the holes at either end of each piece of tread. The pieces of tread had to be individually filed down to make them fit together and rotate smoothly.
 
 The next step in the project was writing the control code for the Arduino. 
 
@@ -381,18 +383,18 @@ void loop() {
 }
 ```
 
-The arduino control code begins by setting up the pinMode for the power, motor, and ultrasonic sensor pins. In the loop function it checks if the jumper wires which I use for turning it on and off are connected. If the power jumpers are disconnected it disables the motors and returns from the function. If they are connected it uses the ultrasonic sensor to measure the distance to the nearest object in the vehicle's path. If something is within 20cm it reverses the direction of one of the motors. It then writes the speeds to the motors which causes it to turn if something is in the path or continue straight if it's clear. 
+The Arduino control code begins by setting up the pinMode for the power, motor, and ultrasonic sensor pins. In the loop function it checks if the jumper wires which I use for turning it on and off are connected. If the power jumpers are disconnected it disables the motors and returns from the function. If they are connected it uses the ultrasonic sensor to measure the distance to the nearest object in the vehicle's path. If something is within 20cm it reverses the direction of one of the motors. It then writes the speeds to the motors which causes it to turn if something is in the path or continue straight if it's clear. 
 
 ## The Result
 
 [![Watch the video](images/preview.png)](https://youtu.be/EfkwKTTyvyM)
 
-As can seen above, the finished vehicle was able to sucessfully navigate around objects placed in its path. And despite my concerns the 9V batter that I used was able to power both motors and the ultrasonic sensor succesfully. 
+As can be seen above, the finished vehicle was able to successfully navigate around objects placed in its path. And despite my concerns the 9V batter that I used was able to power both motors and the ultrasonic sensor. 
 
 The treads provided adequate traction for the vehicle to move any surface that I tested it on, although the battery was not strong enough to power the motors up inclines or on some thicker carpets.
 
 ## Next Time
 
-Although the project was an overall success, there are a few small changes that I would make if I was to do it again. The first change I would make would be planning out the battery system better from the beginning. I ended up only using a single 9V battery to power the entire vehicle, which was a little underpowered. In the future I would use a battery holder with an on/off switch mounted to the top of the vehicle so that I could increase the power of the vehicle and have easy access to controlling whether or not it was turned on. 
+Although the project was an overall success, there are a few small changes that I would make if I was to do it again. The first change I would make would be planning out the battery system better from the beginning. I ended up only using a single 9V battery to power the entire vehicle, which was a little underpowered. In the future I would use a battery holder with an on/off switch mounted to the top of the vehicle so that I could increase the power of the vehicle and have easy access to controlling whether it was turned on. 
 
 Additionally, I would try to find a way to improve obstacle detection for objects off the edge of the vehicle's path. Currently the ultrasonic sensor can miss obstacles that are off to the edge of its small field of view causing the vehicle to try to drive past things that will hit the tracks.
