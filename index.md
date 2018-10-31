@@ -29,283 +29,13 @@ I began this project by designing the body of the vehicle on OpenSCAD. Contrary 
 
 ![Vehicle Body](images/vehicle_body.jpg)
 
-The OpenSCAD code for the vehicle body can be seen below. I tried to keep as much the OpenSCAD design as parametric as possible so it should be relatively easy to replace components with ones of different dimensions or change the overall vehicle dimensions.
-
-```OpenSCAD
-$fn=256;
-
-motor_rad = 13.5;
-motor_dia = motor_rad * 2;
-motor_len = 59;
-
-arduino_len = 101.5;
-arduino_wid = 53.3;
-
-base_ht = 2;
-padding = 2;
-
-axle_offset = motor_rad + padding;
-x_offset = 32;
-
-y_dim = arduino_len + (2 * motor_dia) + 24;
-x_dim = motor_len + x_offset;
-z_dim = motor_dia + base_ht;
-
-module axle(rotation = 0) {
-    rotate([0, rotation, 0]) {
-        difference() {
-            base_cyl_ht = 8;
-            axle_cyl_ht = 9;
-            top_cyl_ht = 2;
-            union() {
-                cylinder(r=4, h=base_cyl_ht);
-                translate([0, 0, base_cyl_ht])
-                    cylinder(r=2.4, h=axle_cyl_ht);
-                translate([0, 0, base_cyl_ht + axle_cyl_ht])
-                    cylinder(r=3, h=top_cyl_ht);
-            }
-            
-            slot_width = 1.4;
-            slot_length = 8;
-            slot_height = 4;
-            slot_z = base_cyl_ht + axle_cyl_ht + top_cyl_ht - slot_height;
-            
-            rotate([0, 0, 90])
-                translate([- slot_width / 2, - slot_length / 2, slot_z])
-                    cube([slot_width, slot_length, slot_height + 1]);
-        }
-    }
-}
-
-module motor_housing(rotation = 0) {
-    padding = 2;
-    width = motor_dia + padding * 2;
-    length = x_dim;
-    height = motor_dia / 2 + padding;
-    rotate([0, 0, rotation]) {
-        translate([- width / 2, 0, 0]) {
-            difference() {
-                union() {
-                    translate([width / 2,  0, 0]) 
-                        cube([width / 2, length, height]);
-                    rotate([-90,0,0])
-                        translate([width / 2, - width / 2, 0]) 
-                            cylinder(r = width / 2, h = length);
-                }
-                rotate([-90,0,0])
-                    translate([width / 2, - width / 2, - 1])
-                        cylinder(r = motor_rad, h = length + 2);
-                
-                translate([(width / 2),  padding, 2])
-                    cube([(width / 2) + 1, x_offset, height]);
-            }
-        }
-    }
-}
-
-module axle_housing(rotation = 0) {
-    rotate([0, 90, rotation]) {
-        height = 5;
-        difference() {
-            union() {
-            cylinder(d=motor_dia + 4, h=height);
-            translate([0, 0, -height])
-                cylinder(r=4, h=5);
-            }
-            translate([0, 0, 1])
-                cylinder(d=motor_dia, h=height);
-            translate([0, 0, -6])
-                cylinder(r=2.2, h=8);
-            translate([0, 0, - 2])
-                cylinder(r=3.3, h=4);
-        }
-    }
-}
-
-module box(x, y, z) {
-    hull()
-    {
-        translate([x, y - axle_offset, motor_rad + padding])
-            rotate([0, -90, 0])
-                cylinder(d=motor_dia + 4, h=x);
-        translate([x, axle_offset, motor_rad + padding])
-            rotate([0, -90, 0])
-                cylinder(d=motor_dia + 4, h=x);  
-    }
-}
-
-module shell() {
-    difference() {
-        
-        union() {
-            box(x_dim, y_dim, z_dim);
-            
-            cube([x_dim, motor_rad + padding, motor_rad + padding]);
-
-            translate([0, y_dim - axle_offset, 0])
-                cube([x_dim, motor_rad + padding, motor_rad + padding]);
-            
-            translate([x_dim, axle_offset, motor_rad + base_ht])
-                axle(rotation = 90);
-
-            translate([0, y_dim - axle_offset, motor_rad + base_ht])
-                axle(rotation = -90);  
-        }
-        
-        translate([padding, padding, padding])
-            box(x_dim - (2 * padding), y_dim - (2 * padding), z_dim);
-        
-        translate([x_dim + padding, y_dim - axle_offset, motor_rad + base_ht])
-            rotate([0, -90, 0])
-                cylinder(d=motor_dia, h=x_dim);
-        
-        translate([0 - padding, axle_offset, motor_rad + base_ht])
-            rotate([0, 90, 0])
-                cylinder(d=motor_dia, h=x_dim);        
-    }
-    width = motor_len + padding + 5;
-    
-    translate([x_dim + padding + 1, y_dim - axle_offset, motor_rad + base_ht])
-        axle_housing(rotation = 180);
-    
-    translate([0 - padding - 1, axle_offset, motor_rad + base_ht])
-        axle_housing(rotation = 0);
-
-    translate([x_dim, axle_offset, 0])
-        motor_housing(90);
-    
-    translate([0, y_dim - axle_offset, 0])
-        motor_housing(-90);
-} 
-
-module construct() {
-    difference() {
-        shell();
-        
-        translate([padding, axle_offset, z_dim / 2])
-            cube([x_dim - (2 * padding), y_dim - 2 * axle_offset, z_dim / 2]);
-        
-        translate([padding, 0, 3 * (z_dim / 4) + 2])
-            cube([x_dim - (2 * padding), y_dim , z_dim / 2]);
-
-    }
-}
-
-mirror([1,0,0])
-construct();
-```
-
-#  
+The OpenSCAD code for the vehicle body can be [viewed on github](https://github.com/jjacobson/Robotank/blob/master/body/tank_body.scad). I tried to keep as much the OpenSCAD design as parametric as possible so it should be relatively easy to replace components with ones of different dimensions or change the overall vehicle dimensions.
 
 The top of the vehicle is printed separately from the body and can be snapped into place after all the internal wiring has been completed. The motor controller is then mounted to the top.
 
 ![Vehicle Top](images/vehicle_top.jpg)
 
-The OpenSCAD code for the vehicle top can be seen below.
-
-```OpenSCAD
-$fn=256;
-
-motor_rad = 13.5;
-motor_dia = motor_rad * 2;
-motor_len = 59;
-
-arduino_len = 101.5;
-arduino_wid = 53.3;
-
-base_ht = 2;
-padding = 2;
-
-axle_offset = motor_rad + padding;
-x_offset = 32;
-
-y_dim = arduino_len + (2 * motor_dia) + 24;
-x_dim = motor_len + x_offset;
-z_dim = motor_dia + base_ht;
-
-module box(x, y, z) {
-    hull()
-    {
-        translate([x, y - axle_offset, motor_rad + padding])
-            rotate([0, -90, 0])
-                cylinder(d=motor_dia + 4, h=x);
-        translate([x, axle_offset, motor_rad + padding])
-            rotate([0, -90, 0])
-                cylinder(d=motor_dia + 4, h=x);  
-    }
-}
-
-module top() {
-    translate([padding, 0, 0])
-    
-    difference() {
-        union() {
-            difference()
-            {
-                box(x_dim - (2 * padding), y_dim, z_dim);
-
-                translate([- padding - 1, axle_offset, 0])
-                    cube([x_dim + padding, y_dim - motor_dia - padding * 2, z_dim]);
-                
-                translate([- padding - 1, 0, - 1])
-                    cube([x_dim + padding, y_dim, 3 * (z_dim / 4) + 2 + 1]);
-
-                
-                width = 10;
-                length = y_dim / 2;
-                translate([3 * (x_dim / 4) + width / 2 - padding, y_dim / 2 - length / 2, z_dim - padding])
-                    cube([width, length, z_dim / 2]);
-                
-                translate([padding + width / 2, y_dim / 2 - length / 2, z_dim - padding])
-                    cube([width, length, z_dim / 2]);
-            }
-
-
-        }
-        translate([- padding - 1, axle_offset, motor_rad + padding])
-            rotate([0, 90, 0])
-                cylinder(r=motor_rad, h=x_dim + padding);
-        
-        translate([- padding - 1, y_dim - axle_offset, motor_rad + padding])
-            rotate([0, 90, 0])
-                cylinder(r=motor_rad, h=x_dim + padding);
-    }
-    
-    length = x_dim - padding - x_offset;
-        
-    top_brace();
-    
-    translate([x_dim, y_dim, 0])
-        rotate([0, 0, 180])
-            top_brace();   
-}
-
-module top_brace() {
-    angle_size = 12;
-    angle_x = x_offset + padding;
-    angle_y = y_dim - motor_rad - axle_offset - angle_size / 2 + padding;
-    angle_z = z_dim - padding - angle_size / 2;
-
-    translate([x_offset + padding, y_dim - motor_rad - axle_offset - 4, padding])
-        cube([x_dim - x_offset - (padding * 2), padding, z_dim - padding]);
-    
-    difference() {
-        translate([angle_x, angle_y + padding / 2, angle_z])
-           rotate([45, 0, 0])
-                cube([x_dim - x_offset - (padding * 2), angle_size, angle_size]);
-        
-        translate([angle_x - 1, angle_y, angle_z])
-            cube([x_dim - x_offset - padding, angle_size, angle_size * 2]);
-        
-        translate([angle_x - 1 , angle_y - angle_size + padding / 2, z_dim + padding / 2])
-            cube([x_dim - x_offset - padding, angle_size, angle_size]);
-
-    }
-}
-
-mirror([1,0,0])
-top();
-```
+The OpenSCAD code for the vehicle top can also be [viewed on github](https://github.com/jjacobson/Robotank/blob/master/body/tank_body_top.scad).
 
 The treads and are a slightly modified version of the ones given in the [Thingiverse](https://www.thingiverse.com/thing:467807) project mentioned above. I decided that I did not like how the front gears were smaller than the back ones so I modified them to be the same height. The modified FreeCAD files are available in the project's [github repository](https://github.com/jjacobson/Robotank/tree/master/tracks). The full-circle gear snaps on to the axle attached to the vehicle body, and the half-circle gear is attached to each motor's shaft. 
 
@@ -385,16 +115,19 @@ void loop() {
 
 The Arduino control code begins by setting up the pinMode for the power, motor, and ultrasonic sensor pins. In the loop function it checks if the jumper wires which I use for turning it on and off are connected. If the power jumpers are disconnected it disables the motors and returns from the function. If they are connected it uses the ultrasonic sensor to measure the distance to the nearest object in the vehicle's path. If something is within 20cm it reverses the direction of one of the motors. It then writes the speeds to the motors which causes it to turn if something is in the path or continue straight if it's clear. 
 
+There is currently no speed control for the motors, they are either fully on or off. If I expand this project to allow manual control in the future that will be something that I will change to allow for better control of the vehicle speed.
+
 ## The Result
 
-[![Watch the video](images/preview.png)](https://youtu.be/EfkwKTTyvyM)
+<iframe width="750" height="422" src="https://www.youtube.com/embed/EfkwKTTyvyM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-As can be seen above, the finished vehicle was able to successfully navigate around objects placed in its path. And despite my concerns the 9V batter that I used was able to power both motors and the ultrasonic sensor. 
+
+As can be seen above, the finished vehicle was able to successfully navigate around objects placed in its path. And despite my concerns the 9V battery that I used was able to power both motors and the ultrasonic sensor without fail. 
 
 The treads provided adequate traction for the vehicle to move any surface that I tested it on, although the battery was not strong enough to power the motors up inclines or on some thicker carpets.
 
 ## Next Time
 
-Although the project was an overall success, there are a few small changes that I would make if I was to do it again. The first change I would make would be planning out the battery system better from the beginning. I ended up only using a single 9V battery to power the entire vehicle, which was a little underpowered. In the future I would use a battery holder with an on/off switch mounted to the top of the vehicle so that I could increase the power of the vehicle and have easy access to controlling whether it was turned on. 
+Although the project was an overall success, there are a few small changes that I would make if I was to do it again. The first change I would make would be planning out the battery system more thoroughly from the beginning. I ended up only using a single 9V battery to power the entire vehicle, which was a little underpowered. In the future I would use a battery holder with an on/off switch mounted to the top of the vehicle so that I could increase the power of the vehicle and have easy access to controlling whether it was turned on. 
 
-Additionally, I would try to find a way to improve obstacle detection for objects off the edge of the vehicle's path. Currently the ultrasonic sensor can miss obstacles that are off to the edge of its small field of view causing the vehicle to try to drive past things that will hit the tracks.
+Additionally, I would try to find a way to improve obstacle detection for objects off the edge of the vehicle's path. Currently the ultrasonic sensor can miss obstacles that are off to the edge of its small field of view causing the vehicle to try to drive past things that will hit the tracks. I considered using a stepper motor connected to the sensor so that it could view a larger angle in front of the vehicle, but it was outside the scope of this project.
