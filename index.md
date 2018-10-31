@@ -1,7 +1,7 @@
 
 ![End result](images/vehicle.jpg)
 
-#### Components Used:
+##### Components Used:
 
 * [2 12V DC Motors](https://www.amazon.com/gp/product/B00B1KZ8UU/)
 * [Motor Controller](https://www.amazon.com/gp/product/B014KMHSW6/)
