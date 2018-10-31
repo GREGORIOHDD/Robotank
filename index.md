@@ -1,6 +1,7 @@
 
 ![End result](images/vehicle.jpg)
 
+
 ### The Problem
 
 Placeholder
@@ -17,7 +18,8 @@ Placeholder
 
 ### The Result
 
-Placeholder
+[![Watch the video](images/preview.png)](https://youtu.be/EfkwKTTyvyM)
+
 
 ### Next Time
 
