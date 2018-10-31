@@ -1,10 +1,25 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/jjacobson/robotank/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+<div style="text-align:center"><img src ="images/vehicle.jpg"/></div>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### The Problem
 
-### Markdown
+Placeholder
+
+### Inspirations
+
+Before beginning this project I decided to take a look at the work other people have done on similar problems. I was mainly focused on the best way to design the wheels for the vehicle in order to maximize traction and speed.
+
+Druing my search I discovered a design on [Thingiverse](https://www.thingiverse.com/thing:467807) that was using tank treads rather than wheels. I decided that the increased surface area of the tank treads would help maximize traction, so I decided to use a similar design for my project.
+
+### The Project
+
+Placeholder
+
+### The Result
+
+Placeholder
+
+### Next Time
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
@@ -25,13 +40,3 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jjacobson/robotank/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
