@@ -1,5 +1,5 @@
 
-<div style="text-align:center"><img src ="images/vehicle.jpg"/></div>
+![End result](images/vehicle.jpg)
 
 ### The Problem
 
